@@ -1,0 +1,4 @@
+.web-builder__container {
+    min-height: 10rem;
+    background-color: rgba(10, 10, 10, 0.15);
+}

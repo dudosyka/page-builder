@@ -5,6 +5,7 @@ export abstract class ContainerElement extends Element {
   protected children: ElementsCollection = ElementsCollection.empty()
 
   override render() {
+    this.renderAttributes()
     this.children.renderElements()
   }
 

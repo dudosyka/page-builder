@@ -1,31 +1,57 @@
-import {PropertyGroup} from "./props/property-group.ts";
 import {ElementSettings} from "./settings/element-settings.ts";
 import {Template, TemplateData} from "./template/template.ts";
 import {ContainerElement} from "./container/container-element.ts";
+import {AttributePropertyGroup} from "../../property/groups/attribute-property-group.ts";
+import state from "../../modules/state/event-driven-state.ts";
+import {EditorMenuType, MenuChanged} from "../../modules/state/events.ts";
 
 export abstract class Element {
   public htmlElement: HTMLElement
   protected parent: ContainerElement | null = null
   protected elementKey: string
 
-  protected constructor(
+  public selectable: boolean = true
+
+  public name: string = "Element";
+
+  constructor(
     public elementName: string,
     protected template: Template,
-    protected props: PropertyGroup,
+    protected attributes: AttributePropertyGroup,
     protected settings: ElementSettings
   ) {
     this.htmlElement = document.createElement(elementName)
     this.elementKey = `${Date.now()}${elementName}`
   }
 
-  public render(): void {
-    this.htmlElement.innerHTML = this.template.generate()
+  public renderAttributes() {
+    const properties = this.attributes.getAll()
+    properties.forEach(prop => {
+      this.htmlElement.setAttribute(prop.name, prop.getValue())
+    })
   }
 
-  protected abstract selected(): void
+  public render(): void {
+    this.htmlElement.innerHTML = this.template.generate()
+    this.renderAttributes()
+  }
+
+  protected selected() {
+    if (!this.selectable)
+      return
+    state.push(new MenuChanged(EditorMenuType.EDIT_ELEMENT, this))
+    console.log(`Element ${this.name}#${this.elementName} was selected`)
+  }
 
   public mount(parent: ContainerElement): void {
     this.render()
+    if (parent.selectable)
+      this.htmlElement.addEventListener("dblclick", (event) => {
+        event.stopPropagation()
+        this.selected()
+      })
+    else
+      this.selectable = false
     this.parent = parent
   }
 
@@ -45,9 +71,13 @@ export abstract class Element {
     this.htmlElement.remove()
   }
 
-  public update(template: Template): void {
-    this.template = template
-    this.render()
+  public getAttributes(): AttributePropertyGroup {
+    return this.attributes
+  }
+
+  public updateAttributes(attributes: AttributePropertyGroup): void {
+    this.attributes = attributes
+    this.renderAttributes()
   }
   public updateData(data: TemplateData[]): void {
     this.template.updateData(data)

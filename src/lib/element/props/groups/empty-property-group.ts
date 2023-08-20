@@ -1,4 +1,4 @@
-import {PropertyGroup} from "./property-group.ts";
+import {PropertyGroup} from "../property-group.ts";
 
 class EmptyPropertyGroup extends PropertyGroup {}
 
