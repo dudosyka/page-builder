@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page builder</title>
+    <style>
+		    * {
+			    margin: 0;
+			    padding: 0;
+		    }
+        #editor {
+	        position: fixed;
+	        height: 100vh;
+	        width: 19vw;
+	        float: right;
+	        top: 0;
+	        right: 0;
+	        border-left: 2px solid blue;
+	        padding-left: 1vw
+        }
+        #app {
+	        width: 78vw;
+	        border-right: 2px solid orange;
+	        min-height: 100vh
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="editor"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
