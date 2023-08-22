@@ -18,13 +18,12 @@ export class EditAttributeComponent extends ContainerElement {
 
   protected setup(): void {
     this.attributes.classAttr.setValue(["container", "d-flex", "p-2"])
-    console.log(this.attribute, this.attribute.getValue(), this.attribute.name)
     const attributeInput = new InputGroup(this.attribute.getValue(), this.attribute.name)
     const saveBtn = new Button("Save")
     saveBtn.htmlElement.addEventListener("click", () => this.onSaveCallback(attributeInput.getInputValue()))
-    const saveBtnAttributes = new AttributePropertyGroup()
-    saveBtnAttributes.classAttr.setValue(["btn btn-success"])
-    saveBtn.updateAttributes(saveBtnAttributes)
+    saveBtn.updateAttributes((saveBtnAttributes) => {
+      saveBtnAttributes.classAttr.setValue(["btn btn-success"])
+    })
     this.addChild(attributeInput)
     this.addChild(saveBtn)
   }

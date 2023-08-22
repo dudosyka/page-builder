@@ -3,12 +3,14 @@ import {EditorElement} from "./editor-element.ts";
 import {SimpleContainer} from "../../components/simple-container";
 import {HeaderLevel1} from "../../components/header-level-1";
 import {Button} from "../../components/button";
-import state, {Event} from "../state/event-driven-state.ts";
 import {Element} from "../../lib/element/element.ts";
 import {ElementsMenu} from "./elements-menu";
 import {EditElementMenu} from "./edit-element-menu";
 import {StateListener} from "../state/state-listener.ts";
 import {EditorMenuType, MenuChanged} from "../state/events.ts";
+import {Event} from "../state/event.ts";
+import state from "../state/event-driven-state.ts";
+import {FrameStateDto, FrameStateModule} from "../frame/frame-state-module.ts";
 
 export class EditorModule extends Module implements StateListener {
   private currentMenuElement: Element | null = null
@@ -28,6 +30,16 @@ export class EditorModule extends Module implements StateListener {
     simpleContainer.addChild(editorHeader)
     simpleContainer.addChild(createElementsMenu)
     this.parentElement.addChild(simpleContainer)
+
+    document.addEventListener("keydown", event => {
+      if (event.code == "Escape") {
+        if (state.frameState.elementOnSearch) {
+          state.updateAndNotify<FrameStateDto>(FrameStateModule, (state) => {
+            state.data.elementOnInsert = null
+          })
+        }
+      }
+    })
   }
 
   private stateToElement(state: EditorMenuType, elementOnEdit: Element | null) {

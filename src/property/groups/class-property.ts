@@ -11,4 +11,14 @@ export default class ClassProperty extends Property {
   setValue(value: string[] = []): void {
     this.value = value.join(" ")
   }
+
+  append(value: string[]) {
+    this.value += ` ${value.join(" ")}`
+  }
+
+  remove(value: string[]) {
+    value.forEach(el => {
+      this.value = this.value.replace(el, "")
+    })
+  }
 }

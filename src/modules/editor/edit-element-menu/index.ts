@@ -7,7 +7,7 @@ import {EditAttributeComponent} from "./edit-attribute-component";
 import {Property} from "../../../lib/element/props/property.ts";
 
 export class EditElementMenu extends ContainerElement {
-  override selectable = false
+  override frameElement = false
   override name = "Edit elements menu"
   constructor(private onEdit: Element) {
     super(
@@ -23,9 +23,9 @@ export class EditElementMenu extends ContainerElement {
     const attributes = this.onEdit.getAttributes()
     attributes.getAll().forEach(attr => {
       this.addChild(new EditAttributeComponent(attr, newValue => {
-        console.log(attr.name, new Property(attr.name, newValue))
-        attributes.update(attr.name, new Property(attr.name, newValue))
-        this.onEdit.updateAttributes(attributes)
+        this.onEdit.updateAttributes((attributes) => {
+          attributes.update(attr.name, new Property(attr.name, newValue))
+        })
       }))
     })
   }

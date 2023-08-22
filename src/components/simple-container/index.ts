@@ -10,6 +10,6 @@ export class SimpleContainer extends ContainerElement {
   }
 
   protected setup() {
-    this.attributes.classAttr.setValue(["web-builder__container"])
+    this.attributes.classAttr.append(["web-builder__container"])
   }
 }

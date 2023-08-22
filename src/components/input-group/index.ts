@@ -21,9 +21,9 @@ export class InputGroup extends ContainerElement {
   }
 
   override setup() {
-    const containerAttributes = new AttributePropertyGroup()
-    containerAttributes.classAttr.setValue(["container row"])
-    this.updateAttributes(containerAttributes)
+    this.updateAttributes((attributes) => {
+      attributes.classAttr.setValue(["container", "row"])
+    })
     this.input = new Input(this.initValue)
     const label = new Label(this.labelValue)
     this.addChild(label)

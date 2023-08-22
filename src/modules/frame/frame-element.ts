@@ -15,8 +15,12 @@ export class FrameElement extends ModuleElement {
   }
 
   protected setup(): void {
-    this.selectable = true
+    this.frameElement = true
     const simpleContainer = new SimpleContainer
+    // simpleContainer.updateAttributes(attributes => {
+    //   attributes.classAttr.append(["web-builder__container-insertable"])
+    // })
+    // simpleContainer.updateAttributes(attributes)
     // const header = new HeaderLevel1
     // const header2 = new HeaderLevel1
     // const button = new Button
