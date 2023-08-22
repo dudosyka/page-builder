@@ -5,6 +5,7 @@ export enum EditorMenuType {
   MAIN, EDIT_ELEMENT
 }
 export class MenuChanged extends Event {
+  override name: string = "menu-changed:event";
 
   constructor(
     public type: EditorMenuType = EditorMenuType.MAIN,
@@ -12,4 +13,5 @@ export class MenuChanged extends Event {
   ) {
     super();
   }
+
 }
