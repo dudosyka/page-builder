@@ -19,6 +19,7 @@ export class EditorModule extends Module implements StateListener {
   setup(): void {
     this.parentElement.mountOnHtml("editor")
     const simpleContainer = new SimpleContainer
+    simpleContainer.frameElement = false
     const editorHeader = new HeaderLevel1("Editor tab")
     const createElementsMenu = new Button("Create element")
     createElementsMenu.htmlElement.addEventListener("click", () => {
