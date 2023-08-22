@@ -1,4 +1,4 @@
-import {Event} from "./event-driven-state.ts";
+import {Event} from "./event.ts";
 
 export interface StateListener {
   pullStateChange(event: Event): void

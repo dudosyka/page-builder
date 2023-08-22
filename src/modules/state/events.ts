@@ -1,5 +1,5 @@
-import {Event} from "./event-driven-state.ts";
 import {Element} from "../../lib/element/element.ts";
+import {Event} from "./event.ts";
 
 export enum EditorMenuType {
   MAIN, EDIT_ELEMENT
@@ -14,4 +14,8 @@ export class MenuChanged extends Event {
     super();
   }
 
+}
+
+export class SearchHoverChanged extends Event{
+  override name: string = 'search-hover-changed:event';
 }

@@ -4,7 +4,7 @@ import EmptyTemplate from "../../lib/element/template/empty-template.ts";
 import {AttributePropertyGroup} from "../../property/groups/attribute-property-group.ts";
 
 export class EditorElement extends ModuleElement {
-  override selectable = false
+  override frameElement = false
   constructor() {
     super(
       "div",
