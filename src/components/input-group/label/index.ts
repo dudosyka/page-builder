@@ -13,4 +13,5 @@ export class Label extends Element {
       EmptyElementSettings
     );
   }
+  protected setup() {}
 }

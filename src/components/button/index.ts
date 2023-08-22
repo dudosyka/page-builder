@@ -8,4 +8,6 @@ export class Button extends Element {
   constructor(btnTitle: string = "Simple Button", attributes: AttributePropertyGroup = new AttributePropertyGroup) {
     super("button", template(btnTitle), attributes, EmptyElementSettings);
   }
+
+  protected setup() {}
 }

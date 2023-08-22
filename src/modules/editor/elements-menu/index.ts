@@ -15,6 +15,9 @@ export class ElementsMenu extends ContainerElement {
       new AttributePropertyGroup,
       EmptyElementSettings
     );
+  }
+
+  protected setup(): void {
     components.forEach(clazz => {
       const component = new clazz()
       const createBtn = new Button(`Create ${component.name}`)
@@ -27,5 +30,4 @@ export class ElementsMenu extends ContainerElement {
       this.addChild(createBtn)
     })
   }
-  protected selected(): void {}
 }

@@ -2,6 +2,7 @@ import {Element} from "../element.ts";
 import {ElementsCollection} from "./elements-collection.ts";
 
 export abstract class ContainerElement extends Element {
+  override name = "Container"
   protected children: ElementsCollection = ElementsCollection.empty()
 
   override render() {

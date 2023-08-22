@@ -6,7 +6,10 @@ import {AttributePropertyGroup} from "../../property/groups/attribute-property-g
 export class SimpleContainer extends ContainerElement {
   override name: string = "Simple Container";
   constructor(attributes: AttributePropertyGroup = new AttributePropertyGroup) {
-    attributes.classAttr.setValue(["web-builder__container"])
     super("div", SimpleContainerTemplate, attributes, EmptyElementSettings);
+  }
+
+  protected setup() {
+    this.attributes.classAttr.setValue(["web-builder__container"])
   }
 }

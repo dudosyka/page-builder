@@ -6,11 +6,11 @@ import {Input} from "./input";
 import {ContainerElement} from "../../lib/element/container/container-element.ts";
 
 export class InputGroup extends ContainerElement {
-  override name: string = "Input-Group"
-  private readonly input: Input
+  override name: string = "Input Group"
+  private input: Input | null = null
   constructor(
-    initValue: string,
-    labelValue: string
+    private initValue: string = "Test input",
+    private labelValue: string = "Test label"
   ) {
     super(
       "div",
@@ -18,16 +18,22 @@ export class InputGroup extends ContainerElement {
         new AttributePropertyGroup(),
         EmptyElementSettings,
     );
+  }
+
+  override setup() {
     const containerAttributes = new AttributePropertyGroup()
     containerAttributes.classAttr.setValue(["container row"])
     this.updateAttributes(containerAttributes)
-    this.input = new Input(initValue)
-    const label = new Label(labelValue)
+    this.input = new Input(this.initValue)
+    const label = new Label(this.labelValue)
     this.addChild(label)
     this.addChild(this.input)
   }
 
   getInputValue(): string {
-    return (this.input.htmlElement as HTMLInputElement).value
+    if (this.input)
+      return (this.input.htmlElement as HTMLInputElement).value
+    else
+      throw new DOMException("Input didnt mount")
   }
 }

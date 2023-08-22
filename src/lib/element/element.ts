@@ -43,15 +43,23 @@ export abstract class Element {
     console.log(`Element ${this.name}#${this.elementName} was selected`)
   }
 
+  protected abstract setup(): void
+
   public mount(parent: ContainerElement): void {
-    this.render()
-    if (parent.selectable)
+    console.log("--------------------")
+    console.log("Mounted", this.name, this)
+    console.log("Parent", parent.name, parent)
+    console.log("Selectable: ", parent.selectable && this.selectable)
+    console.log("--------------------")
+    if (parent.selectable && this.selectable)
       this.htmlElement.addEventListener("dblclick", (event) => {
         event.stopPropagation()
         this.selected()
       })
     else
       this.selectable = false
+    this.setup()
+    this.render()
     this.parent = parent
   }
 
@@ -59,7 +67,7 @@ export abstract class Element {
     const element = document.getElementById(parentId)
     if (!element)
       throw new DOMException(`Parent element with id = ${parentId} not found`)
-
+    this.setup()
     this.render()
     element.appendChild(this.htmlElement)
   }

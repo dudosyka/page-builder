@@ -13,4 +13,6 @@ export class EditorElement extends ModuleElement {
       EmptyElementSettings
     );
   }
+
+  protected setup(): void {}
 }

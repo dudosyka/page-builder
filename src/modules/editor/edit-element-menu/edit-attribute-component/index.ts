@@ -7,18 +7,21 @@ import {Button} from "../../../../components/button";
 import {Property} from "../../../../lib/element/props/property.ts";
 
 export class EditAttributeComponent extends ContainerElement {
-  constructor(attribute: Property, onSaveCallback: (newValue: string) => void) {
+  constructor(private attribute: Property, private onSaveCallback: (newValue: string) => void) {
     super(
       "div",
       EmptyTemplate,
       new AttributePropertyGroup,
       EmptyElementSettings
     );
+  }
+
+  protected setup(): void {
     this.attributes.classAttr.setValue(["container", "d-flex", "p-2"])
-    console.log(attribute, attribute.getValue(), attribute.name)
-    const attributeInput = new InputGroup(attribute.getValue(), attribute.name)
+    console.log(this.attribute, this.attribute.getValue(), this.attribute.name)
+    const attributeInput = new InputGroup(this.attribute.getValue(), this.attribute.name)
     const saveBtn = new Button("Save")
-    saveBtn.htmlElement.addEventListener("click", () => onSaveCallback(attributeInput.getInputValue()))
+    saveBtn.htmlElement.addEventListener("click", () => this.onSaveCallback(attributeInput.getInputValue()))
     const saveBtnAttributes = new AttributePropertyGroup()
     saveBtnAttributes.classAttr.setValue(["btn btn-success"])
     saveBtn.updateAttributes(saveBtnAttributes)
