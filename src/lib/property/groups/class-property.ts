@@ -1,4 +1,4 @@
-import {Property} from "../../lib/element/props/property.ts";
+import {Property} from "../../element/props/property.ts";
 
 export default class ClassProperty extends Property {
   constructor() {

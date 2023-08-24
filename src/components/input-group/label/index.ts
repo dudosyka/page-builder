@@ -1,5 +1,5 @@
 import template from "./template.ts";
-import {AttributePropertyGroup} from "../../../property/groups/attribute-property-group.ts";
+import {AttributePropertyGroup} from "../../../lib/property/groups/attribute-property-group.ts";
 import EmptyElementSettings from "../../../lib/element/settings/empty-element-settings.ts";
 import {Element} from "../../../lib/element/element.ts";
 

@@ -3,10 +3,10 @@ import EmptyTemplate from "../../../lib/element/template/empty-template.ts";
 import EmptyElementSettings from "../../../lib/element/settings/empty-element-settings.ts";
 import components, {ComponentType} from "../../../components";
 import {Button} from "../../../components/button";
-import {AttributePropertyGroup} from "../../../property/groups/attribute-property-group.ts";
-import {StateListener} from "../../state/state-listener.ts";
-import {Event} from "../../state/event.ts";
-import state from "../../state/event-driven-state.ts";
+import {AttributePropertyGroup} from "../../../lib/property/groups/attribute-property-group.ts";
+import {StateListener} from "../../../lib/state/state-listener.ts";
+import {Event} from "../../../lib/state/event.ts";
+import state from "../../../lib/state/event-driven-state.ts";
 import {FrameStateDto, FrameStateModule, FrameStateUpdated} from "../../frame/frame-state-module.ts";
 import {Element} from "../../../lib/element/element.ts";
 

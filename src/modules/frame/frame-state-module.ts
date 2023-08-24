@@ -1,6 +1,6 @@
-import {StateDataModule} from "../state/modules/state-data-module.ts";
-import {StateModuleDto} from "../state/modules/state-module-dto.ts";
-import {Event} from "../state/event.ts";
+import {StateDataModule} from "../../lib/state/modules/state-data-module.ts";
+import {StateModuleDto} from "../../lib/state/modules/state-module-dto.ts";
+import {Event} from "../../lib/state/event.ts";
 import {ComponentType} from "../../components";
 
 export class FrameStateUpdated extends Event {

@@ -1,6 +1,6 @@
 import {ContainerElement} from "../../../../lib/element/container/container-element.ts";
 import EmptyTemplate from "../../../../lib/element/template/empty-template.ts";
-import {AttributePropertyGroup} from "../../../../property/groups/attribute-property-group.ts";
+import {AttributePropertyGroup} from "../../../../lib/property/groups/attribute-property-group.ts";
 import EmptyElementSettings from "../../../../lib/element/settings/empty-element-settings.ts";
 import {InputGroup} from "../../../../components/input-group";
 import {Button} from "../../../../components/button";

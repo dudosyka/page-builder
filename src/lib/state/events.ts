@@ -1,4 +1,4 @@
-import {Element} from "../../lib/element/element.ts";
+import {Element} from "../element/element.ts";
 import {Event} from "./event.ts";
 
 export enum EditorMenuType {

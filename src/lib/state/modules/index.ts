@@ -1,4 +1,4 @@
-import {FrameStateModule} from "../../frame/frame-state-module.ts";
+import {FrameStateModule} from "../../../modules/frame/frame-state-module.ts";
 
 const modules =  [
   FrameStateModule

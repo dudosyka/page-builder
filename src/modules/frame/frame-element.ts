@@ -2,7 +2,7 @@ import EmptyElementSettings from "../../lib/element/settings/empty-element-setti
 import frameTemplate from "../../templates/frame.template.ts";
 import {ModuleElement} from "../../lib/element/container/module-element.ts";
 import {SimpleContainer} from "../../components/simple-container";
-import {AttributePropertyGroup} from "../../property/groups/attribute-property-group.ts";
+import {AttributePropertyGroup} from "../../lib/property/groups/attribute-property-group.ts";
 
 export class FrameElement extends ModuleElement {
   constructor() {

@@ -6,10 +6,10 @@ import {Button} from "../../components/button";
 import {Element} from "../../lib/element/element.ts";
 import {ElementsMenu} from "./elements-menu";
 import {EditElementMenu} from "./edit-element-menu";
-import {StateListener} from "../state/state-listener.ts";
-import {EditorMenuType, MenuChanged} from "../state/events.ts";
-import {Event} from "../state/event.ts";
-import state from "../state/event-driven-state.ts";
+import {StateListener} from "../../lib/state/state-listener.ts";
+import {EditorMenuType, MenuChanged} from "../../lib/state/events.ts";
+import {Event} from "../../lib/state/event.ts";
+import state from "../../lib/state/event-driven-state.ts";
 import {FrameStateDto, FrameStateModule} from "../frame/frame-state-module.ts";
 
 export class EditorModule extends Module implements StateListener {

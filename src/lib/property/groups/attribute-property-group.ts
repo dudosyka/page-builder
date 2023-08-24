@@ -1,4 +1,4 @@
-import {PropertyGroup, PropertyGroupType} from "../../lib/element/props/property-group.ts";
+import {PropertyGroup, PropertyGroupType} from "../../element/props/property-group.ts";
 import ClassProperty from "./class-property.ts";
 
 export class AttributePropertyGroup extends PropertyGroup {

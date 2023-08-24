@@ -1,12 +1,12 @@
 import {ElementSettings} from "./settings/element-settings.ts";
 import {Template, TemplateData} from "./template/template.ts";
 import {ContainerElement} from "./container/container-element.ts";
-import {AttributePropertyGroup} from "../../property/groups/attribute-property-group.ts";
-import state from "../../modules/state/event-driven-state.ts";
-import {EditorMenuType, MenuChanged, SearchHoverChanged} from "../../modules/state/events.ts";
+import {AttributePropertyGroup} from "../property/groups/attribute-property-group.ts";
+import state from "../state/event-driven-state.ts";
+import {EditorMenuType, MenuChanged, SearchHoverChanged} from "../state/events.ts";
 import {ElementEventListener} from "./events/element-event-listener.ts";
-import {StateListener} from "../../modules/state/state-listener.ts";
-import {Event as StateEvent} from "../../modules/state/event.ts";
+import {StateListener} from "../state/state-listener.ts";
+import {Event as StateEvent} from "../state/event.ts";
 
 export abstract class Element implements StateListener {
   public htmlElement: HTMLElement

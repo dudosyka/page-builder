@@ -1,6 +1,6 @@
 import {Element} from "../element.ts";
 import {ElementsCollection} from "./elements-collection.ts";
-import state from "../../../modules/state/event-driven-state.ts";
+import state from "../../state/event-driven-state.ts";
 
 export abstract class ContainerElement extends Element {
   override name = "Container"

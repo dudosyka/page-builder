@@ -1,7 +1,7 @@
 import {StateListener} from "./state-listener.ts";
 import {StateDataModule} from "./modules/state-data-module.ts";
 import {StateModuleDto} from "./modules/state-module-dto.ts";
-import {FrameStateDto, FrameStateModule} from "../frame/frame-state-module.ts";
+import {FrameStateDto, FrameStateModule} from "../../modules/frame/frame-state-module.ts";
 import {Event} from "./event.ts";
 import {ModuleType} from "./modules";
 
