@@ -1,35 +1,34 @@
-import {ContainerElement} from "../../../lib/element/container/container-element.ts";
-import EmptyTemplate from "../../../lib/element/template/empty-template.ts";
-import EmptyElementSettings from "../../../lib/element/settings/empty-element-settings.ts";
-import components, {ComponentType} from "../../../components";
-import {Button} from "../../../components/button";
-import {AttributePropertyGroup} from "../../../lib/property/groups/attribute-property-group.ts";
-import {StateListener} from "../../../lib/state/state-listener.ts";
-import {Event} from "../../../lib/state/event.ts";
-import state from "../../../lib/state/event-driven-state.ts";
-import {FrameStateDto, FrameStateModule, FrameStateUpdated} from "../../frame/frame-state-module.ts";
-import {Element} from "../../../lib/element/element.ts";
+import EmptyTemplate from "@element/template/empty.template.ts";
+import {StateListener} from "@state/state-listener.ts";
+import {Event} from "@state/event.ts";
+import state from "@state/event-driven-state.ts";
+import {FrameStateDto, FrameStateModule, FrameStateUpdated} from "../../../frame/frame.state-module.ts";
+import {Element} from "@element/element.ts";
+import editorModule from "../../editor.module.ts";
+import {Button} from "@components/button";
+import components, {ComponentType} from "@components/index.ts";
+import {ContainerElement} from "@element/container/container.element.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
+import ClassAttribute from "@attributes/attributes/class.attribute.ts";
 
 export class ElementsMenu extends ContainerElement implements StateListener {
-  override frameElement = false
-  override name = "Create elements menu"
+  override name = "Create ui menu"
   private createComponentIcon: Button | null = null
   constructor() {
     super(
       "div",
       EmptyTemplate,
-      new AttributePropertyGroup,
-      EmptyElementSettings
+      new BaseAttributeCollection,
     );
-    state.subscribe(this, new FrameStateUpdated)
+    state.subscribe(this, FrameStateUpdated)
   }
 
   private setupStickToMouse(component: Element) {
     this.createComponentIcon = new Button(`Create ${component.name}`)
     this.createComponentIcon.updateAttributes((attributes) => {
-      attributes.classAttr.setValue(["btn", "btn-primary", "web-builder__mouse-create-icon"])
+      attributes.attribute<ClassAttribute>(ClassAttribute).setValue(["btn", "btn-primary", "web-builder__mouse-create-icon"])
     })
-    this.createComponentIcon.mountOnHtml("app")
+    this.createComponentIcon.mountOnHtml("app", editorModule)
 
     this.createComponentIcon.addGlobalListener("stick-to-cursor", "mousemove", (event: MouseEvent, btn) => {
       if (!state.frameState.elementOnSearch)
@@ -44,7 +43,7 @@ export class ElementsMenu extends ContainerElement implements StateListener {
     const createBtn = new Button(`Create ${component.name}`)
 
     createBtn.updateAttributes((btnAttributes) => {
-      btnAttributes.classAttr.setValue(["btn", "btn-primary"])
+      btnAttributes.attribute<ClassAttribute>(ClassAttribute).setValue(["btn", "btn-primary"])
     })
 
     createBtn.addListener("create-component", "click", (_, __) => {

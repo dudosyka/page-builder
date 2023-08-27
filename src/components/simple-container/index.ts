@@ -1,15 +1,15 @@
-import {ContainerElement} from "../../lib/element/container/container-element.ts";
-import SimpleContainerTemplate from "../../lib/element/template/empty-template.ts";
-import EmptyElementSettings from "../../lib/element/settings/empty-element-settings.ts";
-import {AttributePropertyGroup} from "../../lib/property/groups/attribute-property-group.ts";
+import EmptyTemplate from "@element/template/empty.template.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
+import {ContainerElement} from "@element/container/container.element.ts";
+import ClassAttribute from "@attributes/attributes/class.attribute.ts";
 
 export class SimpleContainer extends ContainerElement {
   override name: string = "Simple Container";
-  constructor(attributes: AttributePropertyGroup = new AttributePropertyGroup) {
-    super("div", SimpleContainerTemplate, attributes, EmptyElementSettings);
+  constructor(attributes: BaseAttributeCollection = new BaseAttributeCollection) {
+    super("div", EmptyTemplate, attributes);
   }
 
   protected setup() {
-    this.attributes.classAttr.append(["web-builder__container"])
+    this.attributes.attribute<ClassAttribute>(ClassAttribute).append(["web-builder__container"])
   }
 }

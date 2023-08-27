@@ -95,15 +95,15 @@ export abstract class Element {
   private initialize() {
     this.htmlElement.addEventListener("dblclick", (event) => {
       event.stopPropagation()
-      this.settings.dblClick()
+      this.settings.dblClick(event, this)
     })
     this.htmlElement.addEventListener("mouseover", (event) => {
       event.stopPropagation()
-      this.settings.mouseOver()
+      this.settings.mouseOver(event, this)
     })
     this.htmlElement.addEventListener("mouseleave", (event) => {
       event.stopPropagation()
-      this.settings.mouseLeave()
+      this.settings.mouseLeave(event, this)
     })
   }
 

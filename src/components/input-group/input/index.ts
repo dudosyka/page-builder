@@ -1,16 +1,16 @@
-import {AttributePropertyGroup} from "../../../lib/property/groups/attribute-property-group.ts";
-import EmptyElementSettings from "../../../lib/element/settings/empty-element-settings.ts";
-import {TemplateFreeElement} from "../../../lib/element/template-free-element.ts";
+import EmptyTemplate from "@element/template/empty.template.ts";
+import {Element} from "@element/element.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
 
-export class Input extends TemplateFreeElement {
+export class Input extends Element {
   override name: string = "Input"
   constructor(
     private initValue: string
   ) {
     super(
       "input",
-      new AttributePropertyGroup,
-      EmptyElementSettings
+      EmptyTemplate,
+      new BaseAttributeCollection,
     );
   }
 

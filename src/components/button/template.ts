@@ -1,4 +1,4 @@
-import {Template} from "../../lib/element/template/template.ts";
+import {Template} from "@lib/element/template/template.ts";
 
 export default (btnTitle: string) => new Template(
   "{{btnTitle}}",

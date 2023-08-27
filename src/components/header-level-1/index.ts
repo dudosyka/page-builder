@@ -1,12 +1,14 @@
-import {EditableElement} from "../../lib/element/editable-element.ts";
-import EmptyElementSettings from "../../lib/element/settings/empty-element-settings.ts";
 import template from "./template.ts";
-import {AttributePropertyGroup} from "../../lib/property/groups/attribute-property-group.ts";
+import {Element} from "@element/element.ts";
+import {ContentEditableAttribute} from "@attributes/attributes/content-editable.attribute.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
 
-export class HeaderLevel1 extends EditableElement {
+export class HeaderLevel1 extends Element {
   override name: string = "Header level 1";
-  constructor(headerTitle: string = "Header level 1", attributes: AttributePropertyGroup = new AttributePropertyGroup) {
-    super("h1", template(headerTitle), attributes, EmptyElementSettings);
+  constructor(headerTitle: string = "Header level 1", attributes: BaseAttributeCollection = new BaseAttributeCollection()) {
+    super("h1", template(headerTitle), attributes);
   }
-  protected setup() {}
+  protected setup() {
+    this.attributes.attribute<ContentEditableAttribute>(ContentEditableAttribute).setValue(true)
+  }
 }

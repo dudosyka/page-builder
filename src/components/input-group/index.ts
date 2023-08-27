@@ -1,9 +1,9 @@
-import EmptyTemplate from "../../lib/element/template/empty-template.ts";
-import {AttributePropertyGroup} from "../../lib/property/groups/attribute-property-group.ts";
-import EmptyElementSettings from "../../lib/element/settings/empty-element-settings.ts";
 import {Label} from "./label";
 import {Input} from "./input";
-import {ContainerElement} from "../../lib/element/container/container-element.ts";
+import {ContainerElement} from "@element/container/container.element.ts";
+import EmptyTemplate from "@element/template/empty.template.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
+import ClassAttribute from "@attributes/attributes/class.attribute.ts";
 
 export class InputGroup extends ContainerElement {
   override name: string = "Input Group"
@@ -15,14 +15,14 @@ export class InputGroup extends ContainerElement {
     super(
       "div",
       EmptyTemplate,
-        new AttributePropertyGroup(),
-        EmptyElementSettings,
+        new BaseAttributeCollection,
     );
   }
 
   override setup() {
     this.updateAttributes((attributes) => {
-      attributes.classAttr.setValue(["container", "row"])
+      const classAttr = attributes.get(ClassAttribute.name) as ClassAttribute
+      classAttr.append(["container", "row"])
     })
     this.input = new Input(this.initValue)
     const label = new Label(this.labelValue)

@@ -1,7 +1,6 @@
 import template from "./template.ts";
-import {AttributePropertyGroup} from "../../../lib/property/groups/attribute-property-group.ts";
-import EmptyElementSettings from "../../../lib/element/settings/empty-element-settings.ts";
-import {Element} from "../../../lib/element/element.ts";
+import {Element} from "@element/element.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
 
 export class Label extends Element {
   override name: string = "Label"
@@ -9,8 +8,7 @@ export class Label extends Element {
     super(
       "label",
       template(labelValue),
-      new AttributePropertyGroup(),
-      EmptyElementSettings
+      new BaseAttributeCollection,
     );
   }
   protected setup() {}

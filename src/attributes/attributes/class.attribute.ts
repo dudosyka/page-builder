@@ -1,6 +1,6 @@
-import {Property} from "../../element/props/property.ts";
+import {Attribute} from "@element/attributes/attribute.ts";
 
-export default class ClassProperty extends Property {
+export default class ClassAttribute extends Attribute {
   constructor() {
     super("class", "");
   }
