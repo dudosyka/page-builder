@@ -1,7 +1,8 @@
-export class Property {
+export class Attribute {
+  public editable: boolean = true
   constructor(
-    public name: string,
-    protected value: string
+    public name: string = "attr",
+    protected value: string = ""
   ) {}
 
   getValue(): string {

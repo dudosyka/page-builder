@@ -1,39 +1,34 @@
-import {ElementSettings} from "./settings/element-settings.ts";
+import {ElementConfiguration} from "./configuration/element-configuration.ts";
 import {Template, TemplateData} from "./template/template.ts";
-import {ContainerElement} from "./container/container-element.ts";
-import {AttributePropertyGroup} from "../property/groups/attribute-property-group.ts";
-import state from "../state/event-driven-state.ts";
-import {EditorMenuType, MenuChanged, SearchHoverChanged} from "../state/events.ts";
+import {ContainerElement} from "./container/container.element.ts";
 import {ElementEventListener} from "./events/element-event-listener.ts";
-import {StateListener} from "../state/state-listener.ts";
-import {Event as StateEvent} from "../state/event.ts";
+import {Module} from "../module/module.ts";
+import EmptyElementConfiguration from "./configuration/empty-element-configuration.ts";
+import {AttributeCollection} from "@element/attributes/attribute-collection.ts";
+import {PropertyCollection} from "@element/property/property-collection.ts";
 
-export abstract class Element implements StateListener {
+export abstract class Element {
   public htmlElement: HTMLElement
   protected parent: ContainerElement | null = null
+  protected parentModule: Module | null = null
   protected elementKey: string
 
-  public frameElement: boolean = true
   public insertable: boolean = false
   public name: string = "Element";
 
   protected mouseIn: boolean = false
+
   private eventListeners: Record<string, [string, EventListener]> = {}
 
   constructor(
     public elementName: string,
     protected template: Template,
-    public attributes: AttributePropertyGroup,
-    protected settings: ElementSettings
+    public attributes: AttributeCollection,
+    protected properties: PropertyCollection = PropertyCollection.empty(),
+    protected settings: ElementConfiguration = EmptyElementConfiguration,
   ) {
     this.htmlElement = document.createElement(elementName)
     this.elementKey = `${Date.now()}${elementName}`
-    state.subscribe(this, SearchHoverChanged)
-  }
-
-  pullStateChange(_: StateEvent): void {
-    if (this.mouseIn)
-      this.mouseLeave()
   }
 
   protected renderAttributes() {
@@ -43,33 +38,13 @@ export abstract class Element implements StateListener {
     })
   }
 
+  protected applyProperties() {
+    this.properties.getAll().forEach(prop => prop.apply(this))
+  }
+
   public render(): void {
     this.htmlElement.innerHTML = this.template.generate()
     this.renderAttributes()
-  }
-
-  protected selected() {
-    if (!this.frameElement)
-      return
-    state.push(new MenuChanged(EditorMenuType.EDIT_ELEMENT, this))
-    console.log(`Element ${this.name}#${this.elementName} was selected`)
-  }
-
-  protected mouseOver(): void {
-    if (this.parent && state.frameState.elementOnSearch) {
-      this.mouseIn = true
-      state.push(SearchHoverChanged)
-      this.updateAttributes(_ => {
-        // attr.classAttr.append(["web-builder__element-insertable-up-down"])
-      })
-    }
-  }
-
-  protected mouseLeave(): void {
-    this.mouseIn = false
-    this.updateAttributes(_ => {
-      // attr.classAttr.remove(["web-builder__element-insertable-up-down"])
-    })
   }
 
   public addGlobalListener<T extends Event>(name: string, eventName: string, listener: ElementEventListener<T>): void {
@@ -106,36 +81,51 @@ export abstract class Element implements StateListener {
 
   protected abstract setup(): void
 
-  public mount(parent: ContainerElement): void {
-    if (parent.frameElement && this.frameElement) {
-      this.htmlElement.addEventListener("dblclick", (event) => {
-        event.stopPropagation()
-        if (!state.frameState.elementOnSearch)
-          this.selected()
-      })
-      this.htmlElement.addEventListener("mouseover", (event) => {
-        event.stopPropagation()
-        this.mouseOver()
-      })
-      this.htmlElement.addEventListener("mouseleave", (event) => {
-        event.stopPropagation()
-        this.mouseLeave()
-      })
-    }
-    else
-      this.frameElement = false
+  private inherit(module: Module | null) {
+    this.parentModule = module
 
-    this.setup()
-    this.render()
-    this.parent = parent
+    if (module) {
+      if (this instanceof ContainerElement)
+        this.settings = module.containerElementConfiguration
+      else
+        this.settings = module.simpleElementConfiguration
+    }
   }
 
-  public mountOnHtml(parentId: string) {
+  private initialize() {
+    this.htmlElement.addEventListener("dblclick", (event) => {
+      event.stopPropagation()
+      this.settings.dblClick()
+    })
+    this.htmlElement.addEventListener("mouseover", (event) => {
+      event.stopPropagation()
+      this.settings.mouseOver()
+    })
+    this.htmlElement.addEventListener("mouseleave", (event) => {
+      event.stopPropagation()
+      this.settings.mouseLeave()
+    })
+  }
+
+  public mount(parent: ContainerElement): void {
+    this.parent = parent
+    this.inherit(parent.parentModule);
+    this.initialize()
+    this.setup()
+    this.render()
+  }
+
+  public mountOnHtml(parentId: string, parentModule: Module) {
+    this.inherit(parentModule)
+
     const element = document.getElementById(parentId)
     if (!element)
       throw new DOMException(`Parent element with id = ${parentId} not found`)
+
+    this.initialize()
     this.setup()
     this.render()
+
     element.appendChild(this.htmlElement)
   }
 
@@ -146,12 +136,12 @@ export abstract class Element implements StateListener {
     this.htmlElement.remove()
   }
 
-  public getAttributes(): AttributePropertyGroup {
+  public getAttributes(): AttributeCollection {
     return this.attributes
   }
 
-  public updateAttributes(attributes: (attributes: AttributePropertyGroup) => void): void {
-    attributes(this.attributes)
+  public updateAttributes(setter: (attributes: AttributeCollection) => void): void {
+    setter(this.attributes)
     this.renderAttributes()
   }
   public updateData(data: TemplateData[]): void {

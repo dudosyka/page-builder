@@ -1,10 +1,10 @@
 import './themes/bootstrap.min.css'
 import './themes/main.css'
-import FrameModule from "./modules/frame/frame-module.ts";
-import EditorModule from "./modules/editor/editor-module.ts";
-import state from "./lib/state/event-driven-state.ts";
-import {EditorMenuType, MenuChanged} from "./lib/state/events.ts";
-import {FrameStateModule} from "./modules/frame/frame-state-module.ts";
+import FrameModule from "./modules/frame/frame.module.ts";
+import EditorModule from "./modules/editor/editor.module.ts";
+import state from "@state/event-driven-state.ts";
+import {EditorMenuType, MenuChanged} from "@state/events.ts";
+import {FrameStateModule} from "./modules/frame/frame.state-module.ts";
 
 FrameModule.setup()
 EditorModule.setup()

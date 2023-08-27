@@ -5,6 +5,15 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "paths": {
+      "@element/*": ["./src/core/element/*"],
+      "@state/*": ["./src/core/state/*"],
+      "@module/*": ["./src/core/module/*"],
+      "@lib/*": ["./src/core/*"],
+
+      "@attributes/*": ["./src/attributes/*"],
+      "@components/*": ["./src/components/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "node",
