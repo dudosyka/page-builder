@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build-styles": "cd ./styles-processor && node ./index.js",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
