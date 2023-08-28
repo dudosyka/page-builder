@@ -36,6 +36,8 @@ export abstract class Element {
     properties.forEach(prop => {
       this.htmlElement.setAttribute(prop.name, prop.getValue())
     })
+    if (this.parentModule)
+      this.htmlElement.setAttribute(this.parentModule.scopeId, "")
   }
 
   protected applyProperties() {
@@ -93,6 +95,10 @@ export abstract class Element {
   }
 
   private initialize() {
+    this.htmlElement.addEventListener("click", (event) => {
+      event.stopPropagation()
+      this.settings.click(event, this)
+    })
     this.htmlElement.addEventListener("dblclick", (event) => {
       event.stopPropagation()
       this.settings.dblClick(event, this)
