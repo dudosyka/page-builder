@@ -4,8 +4,6 @@ const fs = require('fs');
 async function scope(input, scopeId) {
   const res = await postcss([
     require("postcss-modules")({
-      scopeBehaviour: "global",
-      exportGlobals: true,
       generateScopedName: function (name, _, __) {
         return `${name}[${scopeId}]`;
       },
@@ -23,7 +21,6 @@ try {
       return
     const css = fs.readFileSync(`${sourceDir}/${file}`, 'utf8')
     const processed = await scope(css, `data-scope-${process.argv[2]}`)
-    // await (new Promise(resolve => fs.mkdir(`${cssDir}/sources`, (err) => {resolve()})))
     fs.writeFileSync(`${cssDir}/${file}`, processed)
   })
 } catch (err) {
