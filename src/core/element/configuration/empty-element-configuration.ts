@@ -6,6 +6,7 @@ class EmptyElementConfiguration extends ElementConfiguration {
   override mouseLeave(): void {}
 
   override mouseOver(): void {}
+  override click(): void {}
 }
 
 export default new EmptyElementConfiguration()

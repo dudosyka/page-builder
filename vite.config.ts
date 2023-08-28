@@ -11,6 +11,7 @@ export default defineConfig({
 
       "@attributes": path.resolve(".", './src/attributes'),
       "@components": path.resolve(".", './src/components'),
+      "@themes": path.resolve(".", './src/themes'),
     },
   },
 })

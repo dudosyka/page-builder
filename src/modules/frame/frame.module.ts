@@ -7,10 +7,14 @@ import ContainerElementConfiguration from "./configuration/container.element-con
 export class FrameModule extends Module {
   override simpleElementConfiguration = new SimpleElementConfiguration()
   override containerElementConfiguration = new ContainerElementConfiguration()
+  override cssModules = import.meta.glob("../../themes/frame/*.module.css")
+  override scopeId = "data-scope-frame"
+
   constructor() {
     super(new SimpleContainer);
   }
   setup(): void {
+    super.setup()
     this.parentElement.mountOnHtml("app", this)
   }
 

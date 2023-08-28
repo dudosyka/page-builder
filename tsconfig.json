@@ -12,7 +12,8 @@
       "@lib/*": ["./src/core/*"],
 
       "@attributes/*": ["./src/attributes/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@themes/*": ["./src/themes/*"]
     },
 
     /* Bundler mode */
@@ -26,7 +27,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
 }

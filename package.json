@@ -9,10 +9,17 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^20.5.7",
+    "postcss": "^8.4.28",
+    "postcss-nested": "^6.0.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "postcss-modules": "^6.0.0",
+    "postcss-selector-parser": "^6.0.13",
+    "scope-css": "^1.2.1",
+    "style-scoped": "^0.2.2"
   }
 }

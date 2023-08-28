@@ -20,10 +20,22 @@ export class ElementsMenu extends ContainerElement implements StateListener {
       EmptyTemplate,
       new BaseAttributeCollection,
     );
-    state.subscribe(this, FrameStateUpdated)
+    state.subscribe(this, new FrameStateUpdated)
+    this.addGlobalListener<KeyboardEvent>("escape-create-element", "keydown", (event, _) => {
+      if (event.code == "Escape") {
+        if (state.frameState.elementOnInsert) {
+          state.updateAndNotify<FrameStateDto>(FrameStateModule, (state) => {
+            state.data.elementOnInsert = null
+          })
+        }
+      }
+    })
   }
 
   private setupStickToMouse(component: Element) {
+    if (this.createComponentIcon) {
+      this.createComponentIcon.unmount()
+    }
     this.createComponentIcon = new Button(`Create ${component.name}`)
     this.createComponentIcon.updateAttributes((attributes) => {
       attributes.attribute<ClassAttribute>(ClassAttribute).setValue(["btn", "btn-primary", "web-builder__mouse-create-icon"])
@@ -31,7 +43,7 @@ export class ElementsMenu extends ContainerElement implements StateListener {
     this.createComponentIcon.mountOnHtml("app", editorModule)
 
     this.createComponentIcon.addGlobalListener("stick-to-cursor", "mousemove", (event: MouseEvent, btn) => {
-      if (!state.frameState.elementOnSearch)
+      if (!state.frameState.elementOnInsert)
         return
       btn.htmlElement.style.transform = 'translateY('+(event.clientY-120)+'px)';
       btn.htmlElement.style.transform += 'translateX('+(event.clientX-50)+'px)';
@@ -50,7 +62,7 @@ export class ElementsMenu extends ContainerElement implements StateListener {
       state.updateAndNotify<FrameStateDto>(FrameStateModule, (state) => {
         state.data.elementOnInsert = null
       })
-      state.frameState.elementOnSearch = clazz
+      state.frameState.elementOnInsert = clazz
       this.setupStickToMouse(component)
     })
 
@@ -63,8 +75,13 @@ export class ElementsMenu extends ContainerElement implements StateListener {
     })
   }
 
-  pullStateChange(_: Event): void {
-    if (state.frameState.elementOnSearch == null && this.createComponentIcon)
+  private checkEventIsFrameStateUpdated(event: Event): event is FrameStateUpdated {
+    return event.name == (new FrameStateUpdated).name
+  }
+
+  pullStateChange(event: Event): void {
+    console.log(event, this.createComponentIcon)
+    if (state.frameState.elementOnInsert == null && this.createComponentIcon && this.checkEventIsFrameStateUpdated(event))
       this.createComponentIcon.unmount()
       this.createComponentIcon = null
   }

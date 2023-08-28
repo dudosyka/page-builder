@@ -13,4 +13,8 @@ export default class SimpleElementConfiguration extends ElementConfiguration {
   mouseOver(event: MouseEvent, element: Element): void {
     console.log(`Mouse enter ${event} on element: ${element}`)
   }
+
+  click(event: MouseEvent, element: Element): void {
+    console.log(`Mouse click ${event} on element ${element}`)
+  }
 }

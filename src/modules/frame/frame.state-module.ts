@@ -16,10 +16,10 @@ export class FrameStateModule extends StateDataModule<FrameStateDto, FrameStateU
 
   override event: FrameStateUpdated = new FrameStateUpdated();
 
-  public set elementOnSearch(element: ComponentType | null) {
+  public set elementOnInsert(element: ComponentType | null) {
     this.data.elementOnInsert = element
   }
-  public get elementOnSearch(): ComponentType | null {
+  public get elementOnInsert(): ComponentType | null {
     return this.data.elementOnInsert
   }
 }
