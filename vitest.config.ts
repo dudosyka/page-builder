@@ -1,8 +1,14 @@
+import { defineConfig } from 'vitest/config'
 // @ts-ignore
-import path from 'path'
-import { defineConfig } from 'vite'
-
+import path from "path";
 export default defineConfig({
+  test: {
+    environment: "happy-dom",
+    coverage: {
+      provider: "v8",
+      enabled: true
+    }
+  },
   resolve: {
     alias: {
       "@element": path.resolve(".", './src/core/element'),

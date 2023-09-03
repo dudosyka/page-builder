@@ -7,16 +7,24 @@
     "dev": "vite",
     "build-styles": "cd ./styles-processor && node ./index.js",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "test-ui": "vitest --ui"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
+    "@vitest/coverage-istanbul": "^0.34.3",
+    "@vitest/ui": "^0.34.3",
+    "happy-dom": "^10.11.2",
     "postcss": "^8.4.28",
     "postcss-nested": "^6.0.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vitest": "^0.34.3"
   },
   "dependencies": {
+    "@vitest/coverage-v8": "^0.34.3",
     "path": "^0.12.7",
     "postcss-modules": "^6.0.0",
     "postcss-selector-parser": "^6.0.13",
