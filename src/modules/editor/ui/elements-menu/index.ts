@@ -17,8 +17,8 @@ export class ElementsMenu extends ContainerElement implements StateListener {
   constructor() {
     super(
       "div",
-      EmptyTemplate,
       new BaseAttributeCollection,
+      EmptyTemplate,
     );
     state.subscribe(this, new FrameStateUpdated)
     this.addGlobalListener<KeyboardEvent>("escape-create-element", "keydown", (event, _) => {

@@ -6,7 +6,7 @@ import ClassAttribute from "@attributes/attributes/class.attribute.ts";
 export class SimpleContainer extends ContainerElement {
   override name: string = "Simple Container";
   constructor(attributes: BaseAttributeCollection = new BaseAttributeCollection) {
-    super("div", EmptyTemplate, attributes);
+    super("div", attributes, EmptyTemplate);
   }
 
   protected setup() {

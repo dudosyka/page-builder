@@ -11,8 +11,8 @@ export class EditElementMenu extends ContainerElement {
   constructor(private onEdit: Element) {
     super(
       "div",
-      EmptyTemplate,
       new BaseAttributeCollection,
+      EmptyTemplate,
     );
   }
 

@@ -14,8 +14,8 @@ export class InputGroup extends ContainerElement {
   ) {
     super(
       "div",
-      EmptyTemplate,
         new BaseAttributeCollection,
+      EmptyTemplate,
     );
   }
 

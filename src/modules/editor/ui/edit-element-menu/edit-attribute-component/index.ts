@@ -10,8 +10,8 @@ export class EditAttributeComponent extends ContainerElement {
   constructor(private attribute: Attribute, private onSaveCallback: (newValue: string) => void) {
     super(
       "div",
-      EmptyTemplate,
       new BaseAttributeCollection,
+      EmptyTemplate,
     );
   }
 
