@@ -1,16 +1,22 @@
-import {ElementConfiguration} from "./configuration/element-configuration.ts";
-import {Template, TemplateData} from "./template/template.ts";
-import {ContainerElement} from "./container/container.element.ts";
+import {ElementConfiguration} from "@element/configuration/element-configuration.ts";
+import {Template, TemplateData} from "@element/template/template.ts";
+// import {ContainerElement} from "@element/container/container.element.ts";
 import {ElementEventListener} from "./events/element-event-listener.ts";
-import {Module} from "../module/module.ts";
-import EmptyElementConfiguration from "./configuration/empty-element-configuration.ts";
+import {Module} from "@module/module.ts";
+import EmptyElementConfiguration from "@element/configuration/empty-element-configuration.ts";
 import {AttributeCollection} from "@element/attributes/attribute-collection.ts";
 import {PropertyCollection} from "@element/property/property-collection.ts";
+import Parent from "@element/container/parent.ts";
+import {BaseAttributeCollection} from "@attributes/collections/base.attribute-collection.ts";
+import EmptyTemplate from "@element/template/empty.template.ts";
+
+export type ParentElement = Element & Parent
 
 export abstract class Element {
   public htmlElement: HTMLElement
-  protected parent: ContainerElement | null = null
-  protected parentModule: Module | null = null
+  public parent: ParentElement | null = null
+  protected _parentModule: Module | null = null
+
   protected elementKey: string
 
   public insertable: boolean = false
@@ -18,14 +24,14 @@ export abstract class Element {
 
   protected mouseIn: boolean = false
 
-  private eventListeners: Record<string, [string, EventListener]> = {}
+  protected _eventListeners: Record<string, [string, EventListener]> = {}
 
   constructor(
     public elementName: string,
-    protected template: Template,
-    public attributes: AttributeCollection,
+    public attributes: AttributeCollection = new BaseAttributeCollection(),
+    protected template: Template = EmptyTemplate,
     protected properties: PropertyCollection = PropertyCollection.empty(),
-    protected settings: ElementConfiguration = EmptyElementConfiguration,
+    protected _configuration: ElementConfiguration = EmptyElementConfiguration,
   ) {
     this.htmlElement = document.createElement(elementName)
     this.elementKey = `${Date.now()}${elementName}`
@@ -36,8 +42,8 @@ export abstract class Element {
     properties.forEach(prop => {
       this.htmlElement.setAttribute(prop.name, prop.getValue())
     })
-    if (this.parentModule)
-      this.htmlElement.setAttribute(this.parentModule.scopeId, "")
+    if (this._parentModule)
+      this.htmlElement.setAttribute(this._parentModule.scopeId, "")
   }
 
   protected applyProperties() {
@@ -54,7 +60,7 @@ export abstract class Element {
       listener(event as T, this)
     }
     document.addEventListener(eventName, eventListener)
-    this.eventListeners[name] = [eventName, eventListener]
+    this._eventListeners[name] = [eventName, eventListener]
   }
 
   public addListener<T extends Event>(name: string, eventName: string, listener: ElementEventListener<T>): void {
@@ -62,77 +68,79 @@ export abstract class Element {
       listener(event as T, this)
     }
     this.htmlElement.addEventListener(eventName, eventListener)
-    this.eventListeners[name] = [eventName, eventListener]
+    this._eventListeners[name] = [eventName, eventListener]
+  }
+
+  private _removeListener(name: string) {
+    const event = this._eventListeners[name]
+    if (!event)
+      throw new DOMException("Event listener not found")
+
+    const removed = [ this._eventListeners[name][0], this._eventListeners[name][1] ]
+    delete this._eventListeners[name]
+
+    return removed
   }
 
   public removeListener(name: string) {
-    const event = this.eventListeners[name]
-    if (!event)
-      throw new DOMException("Event listener not found")
-
-    this.htmlElement.removeEventListener(event[0], event[1], false)
+    const event = this._removeListener(name)
+    this.htmlElement.removeEventListener(event[0] as string, event[1] as EventListener, false)
   }
 
   public removeGlobalListener(name: string) {
-    const event = this.eventListeners[name]
-    if (!event)
-      throw new DOMException("Event listener not found")
-
-    document.removeEventListener(event[0], event[1], false)
+    const event = this._removeListener(name)
+    document.removeEventListener(event[0] as string, event[1] as EventListener, false)
   }
 
   protected abstract setup(): void
 
-  private inherit(module: Module | null) {
-    this.parentModule = module
+  protected inherit(module: Module | null) {
+    this._parentModule = module
 
-    if (module) {
-      if (this instanceof ContainerElement)
-        this.settings = module.containerElementConfiguration
-      else
-        this.settings = module.simpleElementConfiguration
-    }
+    if (module)
+      this._configuration = module.simpleElementConfiguration
   }
 
-  private initialize() {
-    this.htmlElement.addEventListener("click", (event) => {
+  private initializeListeners() {
+    this.addListener<MouseEvent>("default-click", "click", (event) => {
       event.stopPropagation()
-      this.settings.click(event, this)
+      this._configuration.click(event, this)
     })
-    this.htmlElement.addEventListener("dblclick", (event) => {
+    this.addListener<MouseEvent>("default-dblclick", "dblclick", (event) => {
       event.stopPropagation()
-      this.settings.dblClick(event, this)
+      this._configuration.dblClick(event, this)
     })
-    this.htmlElement.addEventListener("mouseover", (event) => {
+    this.addListener<MouseEvent>("default-mouseover", "mouseover", (event) => {
       event.stopPropagation()
-      this.settings.mouseOver(event, this)
+      this._configuration.mouseOver(event, this)
     })
-    this.htmlElement.addEventListener("mouseleave", (event) => {
+    this.addListener<MouseEvent>("default-mouseleave", "mouseleave", (event) => {
       event.stopPropagation()
-      this.settings.mouseLeave(event, this)
+      this._configuration.mouseLeave(event, this)
     })
   }
 
-  public mount(parent: ContainerElement): void {
-    this.parent = parent
-    this.inherit(parent.parentModule);
-    this.initialize()
+  private init(parent: Module | null) {
+    if (parent)
+      this.inherit(parent);
+    this.initializeListeners()
     this.setup()
     this.render()
   }
 
-  public mountOnHtml(parentId: string, parentModule: Module) {
-    this.inherit(parentModule)
+  public mount(parent: ParentElement): void {
+    this.parent = parent
+    this.init(this.parent._parentModule)
+  }
 
+  public mountOnHtml(parentId: string, parentModule: Module) {
     const element = document.getElementById(parentId)
     if (!element)
       throw new DOMException(`Parent element with id = ${parentId} not found`)
 
-    this.initialize()
-    this.setup()
-    this.render()
-
     element.appendChild(this.htmlElement)
+
+    this.init(parentModule)
   }
 
   public unmount() {
@@ -150,6 +158,7 @@ export abstract class Element {
     setter(this.attributes)
     this.renderAttributes()
   }
+
   public updateData(data: TemplateData[]): void {
     this.template.updateData(data)
     this.render()
