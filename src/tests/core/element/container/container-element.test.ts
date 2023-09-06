@@ -7,6 +7,7 @@ import {Module} from "@module/module.ts";
 describe("Container element class tests", () => {
   let sut: any //ContainerElement class
   let module: Module
+  let element: Element
 
   vi.mock( "@module/module", () => {
     const Module = vi.fn()
@@ -31,6 +32,11 @@ describe("Container element class tests", () => {
       protected setup(): void {}
 
     }("div")
+
+    element = new class extends Element {
+      protected setup(): void {
+      }
+    }('h1')
   })
 
   describe("Mount container element tests", () => {
@@ -57,6 +63,29 @@ describe("Container element class tests", () => {
       expect(sut._configuration).toStrictEqual(module.containerElementConfiguration)
     })
 
+    test("Success adding child element test", () => {
+      element.mount = vi.fn()
+      sut.children.add = vi.fn()
+      sut.htmlElement.appendChild = vi.fn()
+
+      sut.addChild(element)
+
+      expect(Element.prototype.mount).toHaveBeenCalledOnce
+      expect(sut.children.add).toHaveBeenCalledOnce
+      expect(sut.htmlElement.appendChild).toHaveBeenCalledOnce
+      expect(sut.htmlElement.appendChild).toHaveBeenCalledWith(element.htmlElement) //check valid of request
+    })
+
+    test("Success removing child element test", () => {
+      sut.children.removeElementIfExists = vi.fn()
+      sut.htmlElement.removeChild = vi.fn()
+
+      sut.removeChild(element)
+
+      expect(sut.children.removeElementIfExists).toHaveBeenCalledOnce
+      expect(sut.htmlElement.removeChild).toHaveBeenCalledOnce
+      expect(sut.htmlElement.removeChild).toHaveBeenCalledWith(element.htmlElement)
+    })
   })
 
 })
