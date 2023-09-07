@@ -73,7 +73,7 @@ describe("Container element class tests", () => {
       expect(Element.prototype.mount).toHaveBeenCalledOnce
       expect(sut.children.add).toHaveBeenCalledOnce
       expect(sut.htmlElement.appendChild).toHaveBeenCalledOnce
-      expect(sut.htmlElement.appendChild).toHaveBeenCalledWith(element.htmlElement) //check valid of request
+      expect(sut.htmlElement.appendChild).toHaveBeenCalledWith(element.htmlElement)
     })
 
     test("Success removing child element test", () => {
